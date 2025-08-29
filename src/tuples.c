@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 13:16:57 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/08/29 13:46:58 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/08/29 18:29:57 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,61 @@ t_tuple	tuple_point(float x, float y, float z)
 	return t;
 }
 	
-// t_tuple	tuple_vector(float x, float y, float z);
-// t_tuple	tuple_add(t_tuple a, t_tuple b);
-// t_tuple	tuple_sub(t_tuple a, t_tuple b);
-// t_tuple	tuple_scale(t_tuple v, float n);
-// t_tuple	tuple_negate(t_tuple v);
+t_tuple	tuple_vector(float x, float y, float z)
+{
+	t_tuple	t;
+
+	t.x = x;
+	t.y = y;
+	t.z = z;
+	t.w = 1;
+	return t;
+}
+
+t_tuple	tuple_add(t_tuple a, t_tuple b)
+{
+	t_tuple	t;
+
+	t.x = a.x + b.x;
+	t.y = a.y + b.y;
+	t.z = a.z + b.z;
+	t.w = a.w + b.w;
+	return t;
+}
+
+t_tuple	tuple_sub(t_tuple a, t_tuple b)
+{
+	t_tuple	t;
+
+	t.x = a.x - b.x;
+	t.y = a.y - b.y;
+	t.z = a.z - b.z;
+	t.w = a.w - b.w;
+	return t;
+}
+
+t_tuple	tuple_scale(t_tuple v, float n)
+{
+	t_tuple	t;
+
+	t.x = v.x * n;
+	t.y = v.y * n;
+	t.z = v.z * n;
+	t.w = v.w;
+	return t;
+}
+
+t_tuple	tuple_negate(t_tuple v)
+{
+	t_tuple	t;
+
+	t.x = -v.x;
+	t.y = -v.y;
+	t.z = -v.z;
+	t.w = v.w;
+	return t;
+}
+
 // t_tuple	tuple_magnitude(t_tuple v);
 // t_tuple	tuple_normalize(t_tuple v);
 // t_tuple	tuple_dot(t_tuple a, t_tuple b);
