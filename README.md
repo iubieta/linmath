@@ -2,6 +2,9 @@
 
 Linear math and algebra library for 42 projects
 
+### References : 
+* (./res/The\ Ray\ Tracer\ Challenge-Pragmatic\ Bookshelf\ (2019)\ -\ Jamis\ Buck.pdf) [Ray tracer Challenge]
+
 # 1.Tuples: points and vectors
 
 * Tuple = {x,y,z,w} = float[4] or {float[3], int}
