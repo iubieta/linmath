@@ -3,7 +3,7 @@
 Linear math and algebra library for 42 projects
 
 ### References : 
-* [Ray tracer Challenge - Jamis Buck](#./res/The\ Ray\ Tracer\ Challenge-Pragmatic\ Bookshelf\ (2019)\ -\ Jamis\ Buck.pdf)
+* [Ray tracer Challenge - Jamis Buck](./res/The\ Ray\ Tracer\ Challenge-Pragmatic\ Bookshelf\ (2019)\ -\ Jamis\ Buck.pdf)
 
 # 1.Tuples: points and vectors
 
