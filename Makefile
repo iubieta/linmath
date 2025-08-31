@@ -4,24 +4,28 @@
 # @file
 # @version 0.1
 
-NAME = liblinmath.a
+NAME = liblinmath
 CC = gcc
 CFLAGS	= -Wall -Werror -Wextra
-TESTS_LDFLAGS=-lcriterion
+TESTS_LDFLAGS= -L. -llinmath -lcriterion -lm -pthread
 
 RELEASE_OBJ_DIR=obj/
-TEST_OBJ_DIR=test/obj/
-TEST_BIN_DIR=test/bin/
+TEST_OBJ_DIR=test/obj
+TEST_BIN_DIR=test/bin
 
-RELEASE_SRC= src/tuples.c
+RELEASE_SRC=$(wildcard src/*.c)
 RELEASE_OBJ=$(subst src/,obj/,$(RELEASE_SRC:.c=.o))
 
-TESTS_SRC=$(shell find test/src/ -type f -name '*.c')
-TESTS_OBJ=$(patsubst test/src/,test/obj/,$(TESTS_SRC:.c=.o))
-TESTS_BIN=$(patsubst test/src/,tests/bin/,$(TESTS_SRC:.c=))
+# TESTS_SRC=$(shell find test/src/ -type f -name '*.c')
+# TESTS_OBJ=$(patsubst test/src/,test/obj/,$(TESTS_SRC:.c=.o))
+# TESTS_BIN=$(patsubst test/src/,tests/bin/,$(TESTS_SRC:.c=))
 
-HEADERS = src/libregex.h
-RM		= rm -f
+TESTS_SRC    := $(wildcard test/src/*.c)
+TESTS_OBJ    := $(TESTS_SRC:test/src/%.c=$(TEST_OBJ_DIR)/%.o)
+TESTS_BIN    := $(TESTS_SRC:test/src/%.c=$(TEST_BIN_DIR)/%)
+
+HEADERS = src/$(NAME).h
+RM = rm -f
 
 # Colors
 DEF_COLOR = \033[0;39m
@@ -39,27 +43,28 @@ all: $(NAME)
 	@echo "liblinmath compiled"
 
 $(NAME): $(RELEASE_OBJ)
-	@ar rcs $(NAME) $(RELEASE_OBJ)
+	@ar rcs $(NAME).a $(RELEASE_OBJ)
 
-obj/%.o: src/%.c | $(RELEASE_OBJ_DIR)
+$(RELEASE_OBJ_DIR)%.o: src/%.c | $(RELEASE_OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $^ -o $@
 	@echo "release objects created"
 
-test/obj/%.o: test/src/%.c | $(TEST_OBJ_DIR)
+$(TEST_OBJ_DIR)/%.o: test/src/%.c | $(TEST_OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $^ -o $@
 	@echo "test objects created"
 
-test/bin/%: test/obj/%.o $(NAME) $(HEADERS) | $(TEST_BIN_DIR)
-	@$(CC) $(TESTS_LDFLAGS) -L. -llinmath $^ -o $@
+$(TEST_BIN_DIR)/%: test/obj/%.o $(NAME) $(HEADERS) | $(TEST_OBJ_DIR) $(TEST_BIN_DIR)
+	@$(CC) $(TESTS_LDFLAGS) $^ -o $@
+	@echo "test binaries created"
 
 $(RELEASE_OBJ_DIR):
-	@[ -d $(RELEASE_OBJ_DIR) ] || mkdir -p $(RELEASE_OBJ_DIR)
+	mkdir -p $@
 
 $(TEST_OBJ_DIR):
-	@[ -d $(TEST_OBJ_DIR) ] || mkdir -p $(TEST_OBJ_DIR)
+	mkdir -p $@
 
 $(TEST_BIN_DIR):
-	@[ -d $(TEST_BIN_DIR) ] || mkdir -p $(TEST_BIN_DIR)
+	mkdir -p $@
 
 # prevent deleting object in rules chain
 #$(TESTS_BIN): $(RELEASE_OBJ) $(TESTS_OBJ) # no descomentar
@@ -74,9 +79,10 @@ clean:
 	@echo "$(BLUE)$(NAME) test object files succesfully cleaned!$(DEF_COLOR)"
 
 fclean: clean
-	@$(RM) $(NAME_BIN)
-	@$(RM) $(TESTS_BIN)
+	@$(RM) $(TESTS_BIN_DIR)
 	@echo "$(CYAN)$(NAME) test executable files succesfully cleaned!$(DEF_COLOR)"
+	@$(RM) $(NAME).a
+	@echo "$(CYAN)$(NAME) library file succesfully cleaned!$(DEF_COLOR)"
 
 re: fclean all
 

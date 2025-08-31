@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 13:16:57 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/08/29 18:29:57 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/08/31 00:45:36 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ t_tuple	tuple_set(float x, float y, float z, float w)
 	return t;
 }
 
+int	tuple_eq(t_tuple a, t_tuple b)
+{
+	if (!float_eq(a.x, b.x))
+		return 0;
+	if (!float_eq(a.y, b.y))
+		return 0;
+	if (!float_eq(a.z, b.z))
+		return 0;
+	if (!float_eq(a.w, b.w))
+		return 0;
+	return 1;
+}
+
 t_tuple	tuple_point(float x, float y, float z)
 {
 	t_tuple	t;
@@ -50,8 +63,18 @@ t_tuple	tuple_vector(float x, float y, float z)
 	t.x = x;
 	t.y = y;
 	t.z = z;
-	t.w = 1;
+	t.w = 0;
 	return t;
+}
+
+int tuple_is_point(t_tuple t)
+{
+	return (t.w == 1);
+}
+
+int tuple_is_vector(t_tuple t)
+{
+	return (t.w == 0);
 }
 
 t_tuple	tuple_add(t_tuple a, t_tuple b)
