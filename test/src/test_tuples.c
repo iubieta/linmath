@@ -30,6 +30,13 @@ void assert_tuple_eq(t_tuple a, t_tuple b, char *flag, int i) {
 	cr_assert(float_eq(a.w, b.w), "%s %i: expected w:%f, returned w:%f.", flag, i, b.w, a.w);
 }
 
+void expect_tuples_is_nan(t_tuple a,char *flag, int i) {
+	cr_expect(isnan(a.x), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.x);
+	cr_expect(isnan(a.y), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.y);
+	cr_expect(isnan(a.z), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.z);
+	cr_expect(isnan(a.w), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.w);
+}
+
 Test(tuples, tuple_to_4f_array) {
 	t_tuple t;
 	float	ar[4];
@@ -285,12 +292,430 @@ Test(tuples, sub) {
 	a = tuple_set(100,100,100,100);
 	b = tuple_set(NAN, NAN, NAN, NAN);
 	a = tuple_sub(a, b);
-	cr_expect(isnan(a.x), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.x);
-	cr_expect(isnan(a.y), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.y);
-	cr_expect(isnan(a.z), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.z);
-	cr_expect(isnan(a.w), "%s %i: expected x:%f, returned x:%f.", flag, i, NAN, a.w);
-	b = tuple_set(NAN, NAN, NAN, NAN);
-	ret = tuple_eq(a, b);
-	expec = 0;
-	cr_expect(ret == expec, "%s %i: ret expected to be %i.", flag, i++, expec);
+	expect_tuples_is_nan(a, flag, i++);
 }
+
+Test(tuples, scale_up) {
+	char *flag = "scale_up";
+	int i = 1;
+	
+	t_tuple a;
+	t_tuple b;
+	float n;
+	int	ret;
+	int	expec;
+
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(0,0,0,0);
+	a = tuple_scale_up(a, 10);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(1,1,1,1);
+	b = tuple_set(10,10,10,10);
+	a = tuple_scale_up(a, 10);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(1,1,1,1);
+	b = tuple_set(-10,-10,-10,-10);
+	a = tuple_scale_up(a, -10);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(5,5,5,5);
+	a = tuple_scale_up(a, 0.5);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(0,0,0,0);
+	a = tuple_scale_up(a, 0);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(INFINITY,INFINITY,INFINITY,INFINITY);
+	a = tuple_scale_up(a, INFINITY);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(-INFINITY,-INFINITY,-INFINITY,-INFINITY);
+	a = tuple_scale_up(a, -INFINITY);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(NAN,NAN,NAN,NAN);
+	a = tuple_scale_up(a, NAN);
+	expect_tuples_is_nan(a, flag, i++);
+}
+
+Test(tuples, scale_down) {
+	char *flag = "scale_down";
+	int i = 1;
+	
+	t_tuple a;
+	t_tuple b;
+	float n;
+	int	ret;
+	int	expec;
+
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(0,0,0,0);
+	a= tuple_scale_down(a, 10);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(1,1,1,1);
+	b = tuple_set(0.1,0.1,0.1,0.1);
+	a = tuple_scale_down(a, 10);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(1,1,1,1);
+	b = tuple_set(-0.1,-0.1,-0.1,-0.1);
+	a = tuple_scale_down(a, -10);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(20,20,20,20);
+	a = tuple_scale_down(a, 0.5);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(NAN,NAN,NAN,NAN);
+	a = tuple_scale_down(a, 0);
+	expect_tuples_is_nan(a, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(0,0,0,0);
+	a = tuple_scale_down(a, INFINITY);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(0,0,0,0);
+	a = tuple_scale_down(a, -INFINITY);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(10,10,10,10);
+	b = tuple_set(NAN,NAN,NAN,NAN);
+	a = tuple_scale_down(a, NAN);
+	expect_tuples_is_nan(a, flag, i++);
+}
+
+Test(tuples, negate) {
+	char *flag = "negate";
+	int i = 1;
+	
+	t_tuple a;
+	t_tuple b;
+	float n;
+	int	ret;
+	int	expec;
+
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(0,0,0,0);
+	a= tuple_negate(a);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(1,1,1,1);
+	b = tuple_set(-1,-1,-1,-1);
+	a = tuple_negate(a);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(-1,-1,-1,-1);
+	b = tuple_set(1,1,1,1);
+	a = tuple_negate(a);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(INFINITY,INFINITY,INFINITY,INFINITY);
+	b = tuple_set(-INFINITY,-INFINITY,-INFINITY,-INFINITY);
+	a = tuple_negate(a);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(-INFINITY,-INFINITY,-INFINITY,-INFINITY);
+	b = tuple_set(INFINITY,INFINITY,INFINITY,INFINITY);
+	a = tuple_negate(a);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(NAN,NAN,NAN,NAN);
+	a = tuple_negate(a);
+	expect_tuples_is_nan(a, flag, i);
+}
+
+Test(tuples, magnitude) {
+	char *flag = "magnitude";
+	int i = 1;
+	
+	t_tuple a;
+	t_tuple b;
+	float	ret;
+	float	expec;
+
+	a = tuple_set(0,0,0,0);
+	ret = tuple_magnitude(a);
+	expec = 0;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,0,0,0);
+	ret = tuple_magnitude(a);
+	expec = 1;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,0,0,1);
+	ret = tuple_magnitude(a);
+	expec = 0;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,0,0,3);
+	ret = tuple_magnitude(a);
+	expec = NAN;
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,1,1,0);
+	ret = tuple_magnitude(a);
+	expec = sqrtf(3);
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,1,1,1);
+	ret = tuple_magnitude(a);
+	expec = 0;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(3,4,0,0);
+	ret = tuple_magnitude(a);
+	expec = 5;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,-2,2,0);
+	ret = tuple_magnitude(a);
+	expec = 3;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+
+	a = tuple_set(1,INFINITY,1,0);
+	ret = tuple_magnitude(a);
+	expec = INFINITY;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,-INFINITY,1,0);
+	ret = tuple_magnitude(a);
+	expec = INFINITY;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+
+	a = tuple_set(1,NAN,1,0);
+	ret = tuple_magnitude(a);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(INFINITY,INFINITY,INFINITY,0);
+	ret = tuple_magnitude(a);
+	expec = INFINITY;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+}
+
+Test(tuples, normalize) {
+	char *flag = "normalize";
+	int i = 1;
+	
+	t_tuple a;
+	t_tuple b;
+	float	ret;
+	float	expec;
+
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(0,0,0,0);
+	a = tuple_normalize(a);
+	expect_tuples_is_nan(a, flag, i++);
+
+	a = tuple_set(1,0,0,0);
+	b = tuple_set(1,0,0,0);
+	a = tuple_normalize(a);
+	expect_tuple_eq(a, b, flag, i++);
+	ret = tuple_magnitude(a);
+	expec = 1;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+
+	a = tuple_set(1,0,0,1);
+	a = tuple_normalize(a);
+	expect_tuples_is_nan(a, flag, i);
+
+	a = tuple_set(1,0,0,3);
+	a = tuple_normalize(a);
+	expect_tuples_is_nan(a, flag, i);
+
+	a = tuple_set(3,0,0,0);
+	b = tuple_set(1,0,0,0);
+	a = tuple_normalize(a);
+	expect_tuple_eq(a, b, flag, i++);
+	ret = tuple_magnitude(a);
+	expec = 1;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+
+	a = tuple_set(3,4,0,0);
+	b = tuple_set(0.6,0.8,0,0);
+	a = tuple_normalize(a);
+	expect_tuple_eq(a, b, flag, i++);
+	ret = tuple_magnitude(a);
+	expec = 1;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,-2,2,0);
+	b = tuple_set(0.333333,-0.666666,0.666666,0);
+	a = tuple_normalize(a);
+	expect_tuple_eq(a, b, flag, i++);
+	ret = tuple_magnitude(a);
+	expec = 1;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(INFINITY,0,0,0);
+	b = tuple_set(NAN,0,0,0);
+	a = tuple_normalize(a);
+	cr_expect(isnan(a.x), "%s %i: expected x:%f, returned x:%f.", flag, i, b.x, a.x);
+	cr_expect(float_eq(a.y, b.y), "%s %i: expected y:%f, returned y:%f.", flag, i, b.y, a.y);
+	cr_expect(float_eq(a.z, b.z), "%s %i: expected z:%f, returned z:%f.", flag, i, b.z, a.z);
+	cr_expect(float_eq(a.w, b.w), "%s %i: expected w:%f, returned w:%f.", flag, i, b.w, a.w);
+	ret = tuple_magnitude(a);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+
+	a = tuple_set(-INFINITY,0,0,0);
+	b = tuple_set(NAN,0,0,0);
+	a = tuple_normalize(a);
+	cr_expect(isnan(a.x), "%s %i: expected x:%f, returned x:%f.", flag, i, b.x, a.x);
+	cr_expect(float_eq(a.y, b.y), "%s %i: expected y:%f, returned y:%f.", flag, i, b.y, a.y);
+	cr_expect(float_eq(a.z, b.z), "%s %i: expected z:%f, returned z:%f.", flag, i, b.z, a.z);
+	cr_expect(float_eq(a.w, b.w), "%s %i: expected w:%f, returned w:%f.", flag, i, b.w, a.w);
+	ret = tuple_magnitude(a);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(NAN,0,0,0);
+	a = tuple_normalize(a);
+	expect_tuples_is_nan(a, flag, i++);
+	ret = tuple_magnitude(a);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+}
+
+Test(tuples, dot_product) {
+	char *flag = "dot_product";
+	int i = 1;
+	
+	t_tuple a;
+	t_tuple b;
+	float	ret;
+	float	expec;
+
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(1,1,1,1);
+	ret = tuple_dot(a, b);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,1,1,1);
+	b = tuple_set(0,0,0,0);
+	ret = tuple_dot(a, b);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(1,1,1,0);
+	ret = tuple_dot(a, b);
+	expec = 0;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,0,0,0);
+	b = tuple_set(1,0,0,0);
+	ret = tuple_dot(a, b);
+	expec = 1;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(-1,0,0,0);
+	b = tuple_set(1,0,0,0);
+	ret = tuple_dot(a, b);
+	expec = -1;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,2,3,0);
+	b = tuple_set(2,3,4,0);
+	ret = tuple_dot(a, b);
+	expec = 20;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,2,3,0);
+	b = tuple_set(1,2,3,0);
+	a = tuple_normalize(a);
+	b = tuple_normalize(b);
+	ret = tuple_dot(a, b);
+	expec = 1;
+	cr_expect(float_eq(ret, expec), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,2,3,0);
+	b = tuple_set(-1,-2,-3,0);
+	a = tuple_normalize(a);
+	b = tuple_normalize(b);
+	ret = tuple_dot(a, b);
+	expec = -1;
+	cr_expect(float_eq(ret, expec), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,INFINITY,3,0);
+	b = tuple_set(2,3,4,0);
+	ret = tuple_dot(a, b);
+	expec = INFINITY;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,-INFINITY,3,0);
+	b = tuple_set(2,3,4,0);
+	ret = tuple_dot(a, b);
+	expec = -INFINITY;
+	cr_expect(ret == expec, "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(-INFINITY,INFINITY,3,0);
+	b = tuple_set(2,3,4,0);
+	ret = tuple_dot(a, b);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+	
+	a = tuple_set(1,NAN,3,0);
+	b = tuple_set(2,3,4,0);
+	ret = tuple_dot(a, b);
+	cr_expect(isnan(ret), "%s %i: ret %f, expected = %f.", flag, i++, ret, expec);
+}
+
+Test(tuples, cross_product) {
+	char *flag = "cross_product";
+	int i = 1;
+	
+	t_tuple a;
+	t_tuple b;
+	float	ret;
+	float	expec;
+
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(1,1,1,1);
+	a = tuple_cross(a, b);
+	expect_tuples_is_nan(a, flag, i++);
+	
+	a = tuple_set(1,1,1,1);
+	b = tuple_set(0,0,0,0);
+	a = tuple_cross(a, b);
+	expect_tuples_is_nan(a, flag, i++);
+	
+	a = tuple_set(1,0,0,0);
+	b = tuple_set(0,1,0,0);
+	a = tuple_cross(a, b);
+	b = tuple_set(0,0,1,0);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(0,1,0,0);
+	b = tuple_set(1,0,0,0);
+	a = tuple_cross(a, b);
+	b = tuple_set(0,0,-1,0);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(1,0,0,0);
+	b = tuple_set(1,0,0,0);
+	a = tuple_cross(a, b);
+	b = tuple_set(0,0,0,0);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(1,2,3,0);
+	b = tuple_set(2,3,4,0);
+	a = tuple_cross(a, b);
+	b = tuple_set(-1,2,-1,0);
+	expect_tuple_eq(a, b, flag, i++);
+	
+	a = tuple_set(0,0,0,0);
+	b = tuple_set(2,3,4,0);
+	a = tuple_cross(a, b);
+	b = tuple_set(0,0,0,0);
+	expect_tuple_eq(a, b, flag, i++);
+}
+

@@ -45,7 +45,7 @@ Linear math and algebra library for 42 projects
 
 ### Magnitude:
 * It is the distance represented by a vector
-    * Magnitude(v) = sqrt(x * x, y * y, z * z)
+    * Magnitude(v) = sqrt(x * x + y * y + z * z)
 
 ### Normalization:
 * Unit vector = vector whichs magnitude = 1
@@ -55,9 +55,10 @@ Linear math and algebra library for 42 projects
 
 ### Dot product:
 * Represents the angle between 2 vectors
-* The smaller the dot product the greater the angle. < (v1 · v2) <-> > angle(v1, v2)
-* A dot product of 1 means the vectors are identical. v1 · v2 = 1 <-> v1 = v2
-* A dot product of -1 means the vectors point opposite directions. v1 · v2 = -1 <-> v1 = -v2
+* Supposing unit vectors:
+    * The smaller the dot product the greater the angle. < (v1 · v2) <-> > angle(v1, v2)
+    * A dot product of 1 means the vectors are identical. v1 · v2 = 1 <-> v1 = v2
+    * A dot product of -1 means the vectors point opposite directions. v1 · v2 = -1 <-> v1 = -v2
 * Dot product is calculated adding the products of each coordinate
     * v1 · v2 = x1 * x2 + y1 * y2 + z1 * z2
 
