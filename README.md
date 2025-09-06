@@ -64,6 +64,6 @@ Linear math and algebra library for 42 projects
 
 ### Cross product:
 * Represents a vector perpendicular to two given vectors
-* Any vector crossed with itself is the zero vector -> v x v = {0, 0, 0}
+* Any vector crossed with itself (parallel to itself) is the zero vector -> v x v = {0, 0, 0}
 * Cross product formula:
     * v1 x v2 = { y1 * z2 - z1 * y2, z1 * x2 - x1 * z2, x1 * y2 - y1 * x2 }
