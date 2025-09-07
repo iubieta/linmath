@@ -6,26 +6,27 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 12:45:05 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/08/31 00:44:21 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/09/07 11:33:06 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-
 #ifndef LINMATH_H
 # define LINMATH_H
+# include <math.h>
 
+// Constants
 # define EPS 1e-6f
 
 // Float utils
-int float_eq(float a, float b);
+int		float_eq(float a, float b);
 
 // Tuples: points and vectors
-typedef struct s_tuple {
-	float x;
-	float y;
-	float z;
-	float w;
+typedef struct s_tuple
+{
+	float	x;
+	float	y;
+	float	z;
+	float	w;
 }	t_tuple;
 
 t_tuple	tuple_set(float x, float y, float z, float w);
@@ -39,14 +40,12 @@ int		tuple_is_vector(t_tuple t);
 
 t_tuple	tuple_add(t_tuple a, t_tuple b);
 t_tuple	tuple_sub(t_tuple a, t_tuple b);
-
 t_tuple	tuple_scale_up(t_tuple v, float n);
 t_tuple	tuple_scale_down(t_tuple v, float n);
 t_tuple	tuple_negate(t_tuple v);
 
 float	tuple_magnitude(t_tuple v);
 t_tuple	tuple_normalize(t_tuple v);
-
 float	tuple_dot(t_tuple a, t_tuple b);
 t_tuple	tuple_cross(t_tuple a, t_tuple b);
 
