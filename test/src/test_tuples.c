@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 21:34:12 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/08/31 00:47:12 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/09/07 11:43:42 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,9 +301,6 @@ Test(tuples, scale_up) {
 	
 	t_tuple a;
 	t_tuple b;
-	float n;
-	int	ret;
-	int	expec;
 
 	a = tuple_set(0,0,0,0);
 	b = tuple_set(0,0,0,0);
@@ -352,9 +349,6 @@ Test(tuples, scale_down) {
 	
 	t_tuple a;
 	t_tuple b;
-	float n;
-	int	ret;
-	int	expec;
 
 	a = tuple_set(0,0,0,0);
 	b = tuple_set(0,0,0,0);
@@ -403,9 +397,6 @@ Test(tuples, negate) {
 	
 	t_tuple a;
 	t_tuple b;
-	float n;
-	int	ret;
-	int	expec;
 
 	a = tuple_set(0,0,0,0);
 	b = tuple_set(0,0,0,0);
@@ -442,7 +433,6 @@ Test(tuples, magnitude) {
 	int i = 1;
 	
 	t_tuple a;
-	t_tuple b;
 	float	ret;
 	float	expec;
 
@@ -675,8 +665,6 @@ Test(tuples, cross_product) {
 	
 	t_tuple a;
 	t_tuple b;
-	float	ret;
-	float	expec;
 
 	a = tuple_set(0,0,0,0);
 	b = tuple_set(1,1,1,1);

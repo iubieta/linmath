@@ -7,7 +7,7 @@
 NAME = liblinmath
 CC = gcc
 CFLAGS	= -Wall -Werror -Wextra
-TESTS_LDFLAGS= -L. -llinmath -lcriterion -lm -pthread
+TEST_LDFLAGS= -L. -llinmath -lcriterion -lm -pthread
 
 RELEASE_OBJ_DIR=obj/
 TEST_OBJ_DIR=test/obj
@@ -16,16 +16,12 @@ TEST_BIN_DIR=test/bin
 RELEASE_SRC=$(wildcard src/*.c)
 RELEASE_OBJ=$(subst src/,obj/,$(RELEASE_SRC:.c=.o))
 
-# TESTS_SRC=$(shell find test/src/ -type f -name '*.c')
-# TESTS_OBJ=$(patsubst test/src/,test/obj/,$(TESTS_SRC:.c=.o))
-# TESTS_BIN=$(patsubst test/src/,tests/bin/,$(TESTS_SRC:.c=))
+TEST_SRC    := $(wildcard test/src/*.c)
+TEST_OBJ    := $(TEST_SRC:test/src/%.c=$(TEST_OBJ_DIR)/%.o)
+TEST_BIN    := $(TEST_SRC:test/src/%.c=$(TEST_BIN_DIR)/%)
 
-TESTS_SRC    := $(wildcard test/src/*.c)
-TESTS_OBJ    := $(TESTS_SRC:test/src/%.c=$(TEST_OBJ_DIR)/%.o)
-TESTS_BIN    := $(TESTS_SRC:test/src/%.c=$(TEST_BIN_DIR)/%)
-
-HEADERS = src/$(NAME).h
-RM = rm -f
+HEADERS = src/linmath.h
+RM = rm -rf
 
 # Colors
 DEF_COLOR = \033[0;39m
@@ -50,12 +46,11 @@ $(RELEASE_OBJ_DIR)%.o: src/%.c | $(RELEASE_OBJ_DIR)
 	@echo "release objects created"
 
 $(TEST_OBJ_DIR)/%.o: test/src/%.c | $(TEST_OBJ_DIR)
-	@$(CC) $(CFLAGS) -c $^ -o $@
+	@$(CC) $(CFLAGS) -I src -c $^ -o $@
 	@echo "test objects created"
 
 $(TEST_BIN_DIR)/%: test/obj/%.o $(NAME) $(HEADERS) | $(TEST_OBJ_DIR) $(TEST_BIN_DIR)
-	@$(CC) $(TESTS_LDFLAGS) $^ -o $@
-	@echo "test binaries created"
+	@$(CC) $(TEST_LDFLAGS) $^ -o $@
 
 $(RELEASE_OBJ_DIR):
 	mkdir -p $@
@@ -66,20 +61,22 @@ $(TEST_OBJ_DIR):
 $(TEST_BIN_DIR):
 	mkdir -p $@
 
-# prevent deleting object in rules chain
-#$(TESTS_BIN): $(RELEASE_OBJ) $(TESTS_OBJ) # no descomentar
+$(TEST_BIN):  $(TEST_OBJ) $(NAME).a | $(TEST_BIN_DIR) # no descomentar
+	@$(CC) $^ -o $@ $(TEST_LDFLAGS)
+	@echo "test binaries created"
 
-run-tests: $(TESTS_BIN)
+run-tests: $(TEST_BIN)
 	@./$^ || true
 
 clean:
-	@$(RM) -rf $(RELEASE_OBJ)
-	@$(RM) -rf $(TESTS_OBJ)
-	@$(RM) -f src/$(NAME).h.gch
+	@$(RM) $(RELEASE_OBJ_DIR)
+	@echo "$(BLUE)$(NAME) library object files succesfully cleaned!$(DEF_COLOR)"
+	@$(RM) $(TEST_OBJ_DIR)
 	@echo "$(BLUE)$(NAME) test object files succesfully cleaned!$(DEF_COLOR)"
+	@$(RM) src/$(NAME).h.gch
 
 fclean: clean
-	@$(RM) $(TESTS_BIN_DIR)
+	@$(RM) $(TEST_BIN_DIR)
 	@echo "$(CYAN)$(NAME) test executable files succesfully cleaned!$(DEF_COLOR)"
 	@$(RM) $(NAME).a
 	@echo "$(CYAN)$(NAME) library file succesfully cleaned!$(DEF_COLOR)"
