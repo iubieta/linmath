@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 12:45:05 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/09/07 11:33:06 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/09/07 15:44:35 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 // Float utils
 int		float_eq(float a, float b);
+float	float_limit(float n, float min, float max);
 
 // Tuples: points and vectors
 typedef struct s_tuple
