@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 12:45:05 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/09/07 15:44:35 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/09/17 00:14:07 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,15 @@ float	tuple_magnitude(t_tuple v);
 t_tuple	tuple_normalize(t_tuple v);
 float	tuple_dot(t_tuple a, t_tuple b);
 t_tuple	tuple_cross(t_tuple a, t_tuple b);
+
+// Matrices
+typedef struct s_matrix {
+	int	size;
+	float value[4][4];
+} t_matrix;
+
+t_matrix	matrix_set_2x2(float values[4]);
+t_matrix	matrix_set_3x3(float values[9]);
+t_matrix	matrix_set_4x4(float values[9]);
 
 #endif 
