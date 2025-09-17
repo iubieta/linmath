@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:39:26 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/09/17 20:33:46 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:35:34 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_matrix	matrix_identity(int size)
 	return (m);
 }
 
-t_matrix		matrix_translation(float x, float y, float z)
+t_matrix	matrix_translation(float x, float y, float z)
 {
 	t_matrix	m;
 
@@ -81,7 +81,7 @@ t_matrix		matrix_translation(float x, float y, float z)
 	return (m);
 }
 
-t_matrix		matrix_scalation(float x, float y, float z)
+t_matrix	matrix_scalation(float x, float y, float z)
 {
 	t_matrix	m;
 

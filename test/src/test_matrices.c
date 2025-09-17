@@ -119,3 +119,79 @@ Test(Matrix, matrix_eq) {
 	b = matrix_from_array(4, values_2);
 	cr_expect(matrix_eq(a, b) == 0);
 }
+
+Test(Matrix, identity) {
+	t_matrix a;
+	t_matrix b;
+	
+	float values2[16] = 
+	{1, 0,
+	 0, 1};
+	a = matrix_from_array(2, values2);
+	b = matrix_identity(2);
+	cr_expect(matrix_eq(a, b) == 1);
+	
+	
+	float values3[16] = 
+	{1, 0, 0,
+	 0, 1, 0,
+	 0, 0, 1};
+	a = matrix_from_array(3, values3);
+	b = matrix_identity(3);
+	cr_expect(matrix_eq(a, b) == 1);
+	
+	float values4[16] = 
+	{1, 0, 0, 0,
+	 0, 1, 0, 0,
+	 0, 0, 1, 0,
+	 0, 0, 0, 1};
+	a = matrix_from_array(4, values4);
+	b = matrix_identity(4);
+	cr_expect(matrix_eq(a, b) == 1);
+}
+
+Test(Matrix, translation) {
+	t_matrix a;
+	t_matrix b;
+	
+	float values4[16] = 
+	{1, 0, 0, 1,
+	 0, 1, 0, 2,
+	 0, 0, 1, 3,
+	 0, 0, 0, 1};
+	a = matrix_from_array(4, values4);
+	b = matrix_translation(1, 2, 3);
+	cr_expect(matrix_eq(a, b) == 1);
+	
+	float values5[16] = 
+	{1, 0, 0, -1,
+	 0, 1, 0, -2,
+	 0, 0, 1, -3,
+	 0, 0, 0, 1};
+	a = matrix_from_array(4, values5);
+	b = matrix_translation(-1, -2, -3);
+	cr_expect(matrix_eq(a, b) == 1);
+}
+
+Test(Matrix, scalation) {
+	t_matrix a;
+	t_matrix b;
+	
+	float values4[16] = 
+	{1, 0, 0, 0,
+	 0, 2, 0, 0,
+	 0, 0, 3, 0,
+	 0, 0, 0, 1};
+	a = matrix_from_array(4, values4);
+	b = matrix_scalation(1, 2, 3);
+	cr_expect(matrix_eq(a, b) == 1);
+	
+	float values5[16] = 
+	{-1, 0, 0, 0,
+	 0, -2, 0, 0,
+	 0, 0, -3, 0,
+	 0, 0, 0, 1};
+	a = matrix_from_array(4, values5);
+	b = matrix_scalation(-1, -2, -3);
+	cr_expect(matrix_eq(a, b) == 1);
+}

@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 12:45:05 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/09/17 20:22:26 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:23:19 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ typedef struct s_matrix {
 t_matrix	matrix_zero();
 t_matrix	matrix_from_array(int size, float array[16]);
 t_matrix	matrix_identity(int size);
+t_matrix	matrix_translation(float x, float y, float z);
+t_matrix	matrix_scalation(float x, float y, float z);
 
 int			matrix_eq(t_matrix a, t_matrix b);
 
