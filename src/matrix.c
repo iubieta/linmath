@@ -6,11 +6,12 @@
 /*   By: iubieta- <iubieta@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:39:26 by iubieta-          #+#    #+#             */
-/*   Updated: 2025/09/17 22:35:34 by iubieta-         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:33:22 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "linmath.h"
+#include <math.h>
 
 t_matrix	matrix_zero()
 {
@@ -92,3 +93,18 @@ t_matrix	matrix_scalation(float x, float y, float z)
 	m.value[3][3] = 1;
 	return (m);
 }
+
+// t_matrix	matrix_rotation(float angle)
+// {
+// 	t_matrix	m;
+//
+// 	angle = radians_to_degrees(angle);
+// 	m = matrix_zero();
+// 	m.value[0][0] = 1;
+// 	m.value[1][1] = cos(angle);
+// 	m.value[1][2] = -sin(angle);
+// 	m.value[2][1] = sin(angle);
+// 	m.value[2][2] = cos(angle);
+// 	m.value[3][3] = 1;
+// 	return (m);
+// }
